@@ -13,6 +13,7 @@ export default function ContactSection() {
     try {
       await fetch(scriptUrl, {
         method: "POST",
+        mode: "no-cors",
         body: JSON.stringify({
           date: new Date().toLocaleString("fr-FR"),
           nom: form.nom,
