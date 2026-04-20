@@ -6,12 +6,13 @@ export default function ContactSection() {
   const [form, setForm] = useState({ nom: "", email: "", type: "" });
   const [sending, setSending] = useState(false);
 
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyd76X1XnQS9iCi985WMlakcm8UuOoJeWOVEymwUHtQkcUdP_e8MD6W4XZUL3YZ7Cg/exec";
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSending(true);
-    const scriptUrl = import.meta.env.VITE_GOOGLE_SCRIPT_URL;
     try {
-      await fetch(scriptUrl, {
+      await fetch(SCRIPT_URL, {
         method: "POST",
         mode: "no-cors",
         body: JSON.stringify({
@@ -23,7 +24,8 @@ export default function ContactSection() {
       });
       toast.success("Message envoyé !");
       setForm({ nom: "", email: "", type: "" });
-    } catch {
+    } catch (err) {
+      console.error("Erreur envoi formulaire:", err);
       toast.error("Erreur lors de l'envoi. Veuillez réessayer.");
     } finally {
       setSending(false);
