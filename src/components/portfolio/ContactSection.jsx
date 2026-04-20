@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Mail, Phone, MapPin, Send } from "lucide-react";
-import { base44 } from "@/api/base44Client";
 import { toast } from "sonner";
 
 export default function ContactSection() {
@@ -10,26 +9,17 @@ export default function ContactSection() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSending(true);
+    const scriptUrl = import.meta.env.VITE_GOOGLE_SCRIPT_URL;
     try {
-      await base44.integrations.Core.SendEmail({
-        to: "eric@faireunpont.fr",
-        subject: `Demande de contact — ${form.type}`,
-        body: `Nom : ${form.nom}\nEmail : ${form.email}\nType de coaching : ${form.type}`,
+      await fetch(scriptUrl, {
+        method: "POST",
+        body: JSON.stringify({
+          date: new Date().toLocaleString("fr-FR"),
+          nom: form.nom,
+          email: form.email,
+          type: form.type,
+        }),
       });
-
-      const scriptUrl = import.meta.env.VITE_GOOGLE_SCRIPT_URL;
-      if (scriptUrl) {
-        await fetch(scriptUrl, {
-          method: "POST",
-          body: JSON.stringify({
-            date: new Date().toLocaleString("fr-FR"),
-            nom: form.nom,
-            email: form.email,
-            type: form.type,
-          }),
-        });
-      }
-
       toast.success("Message envoyé !");
       setForm({ nom: "", email: "", type: "" });
     } catch {
