@@ -1,0 +1,23 @@
+{
+  "name": "SiteContent",
+  "type": "object",
+  "properties": {
+    "section": {
+      "type": "string",
+      "description": "Section du site (hero, about, piliers, temoignages, contact)"
+    },
+    "key": {
+      "type": "string",
+      "description": "Identifiant unique du bloc de texte"
+    },
+    "value": {
+      "type": "string",
+      "description": "Contenu textuel"
+    }
+  },
+  "required": [
+    "section",
+    "key",
+    "value"
+  ]
+}
