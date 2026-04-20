@@ -5,22 +5,25 @@ const partenaires = [
   {
     name: "Sandrine Gruda",
     specialite: "Coaching de motivation",
+    fondateur: "Sandrine Gruda est fondatrice de Philosophie Gruda",
     description:
-      "Fondatrice de Philosophie Gruda, coach certifiée HEC Executive Coaching, Sandrine Gruda accompagne les dirigeants et managers dans la reconquête de leur élan intérieur. Ancienne sportive de haut niveau, meilleure marqueuse de l'histoire de la sélection française de Basket Ball pour les Jeux Olympiques, elle a développé une approche unique qui puise dans la psychologie de la performance pour aider ses coachés à retrouver motivation, engagement et plaisir dans leur action professionnelle.",
+      "Coach certifiée HEC Executive Coaching, Sandrine Gruda accompagne les dirigeants et managers dans la reconquête de leur élan intérieur. Ancienne sportive de haut niveau, meilleure marqueuse de l'histoire de la sélection française de Basket Ball pour les Jeux Olympiques, elle a développé une approche unique qui puise dans la psychologie de la performance pour aider ses coachés à retrouver motivation, engagement et plaisir dans leur action professionnelle.",
     initial: "SG",
   },
   {
     name: "Laurent Courbon",
     specialite: "Coaching de santé",
+    fondateur: "Laurent Courbon est fondateur de Austral",
     description:
-      "Fondateur d'Austral, titulaire du Certificat Health Coach du Harvard Medical School et coach certifié HEC Executive Coaching, Laurent Courbon est spécialiste de la santé des dirigeants. Il intervient à l'intersection du bien-être physique, de la gestion du stress et de la performance durable. Son approche intégrative aide les leaders à prendre soin d'eux-mêmes comme une condition sine qua non de leur efficacité et de leur longévité professionnelle.",
+      "Titulaire du Certificat Health Coach du Harvard Medical School et coach certifié HEC Executive Coaching, Laurent Courbon est spécialiste de la santé des dirigeants. Il intervient à l'intersection du bien-être physique, de la gestion du stress et de la performance durable. Son approche intégrative aide les leaders à prendre soin d'eux-mêmes comme une condition sine qua non de leur efficacité et de leur longévité professionnelle.",
     initial: "LC",
   },
   {
-    name: "Hervé Charlanes",
+    name: "Hervé Charlannes",
     specialite: "Coaching & Intelligence Artificielle",
+    fondateur: "Hervé Charlannes est fondateur de Robulience®",
     description:
-      "Fondateur de Robulience®, coach certifié HEC Executive Coaching, Expert-Comptable et Commissaire aux comptes, Hervé Charlanes réalise une veille technologique de premier plan pour la Compagnie Nationale des Commissaires aux Comptes et intègre pleinement l'IA dans sa manière de coacher en conciliant innovation technologique et dimension humaine.",
+      "Coach certifié HEC Executive Coaching, Expert-Comptable et Commissaire aux comptes, Hervé Charlannes réalise une veille technologique de premier plan pour la Compagnie Nationale des Commissaires aux Comptes et intègre pleinement l'IA dans sa manière de coacher en conciliant innovation technologique et dimension humaine.",
     initial: "HC",
   },
   {
@@ -63,6 +66,9 @@ export default function PartenairesSection() {
               <p className="text-primary text-xs sm:text-sm font-medium italic">{p.specialite}</p>
             </div>
           </div>
+          {p.fondateur && (
+            <p className="text-sm font-medium text-foreground mb-3 italic">{p.fondateur}</p>
+          )}
           <p className="text-muted-foreground text-sm leading-relaxed">{p.description}</p>
           <div className="mt-5 pt-4 border-t border-border">
             <span className="text-xs font-semibold text-primary tracking-widest uppercase">Coach certifié HEC Executive Coaching</span>

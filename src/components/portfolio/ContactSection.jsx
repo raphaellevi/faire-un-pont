@@ -10,14 +10,33 @@ export default function ContactSection() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSending(true);
-    await base44.integrations.Core.SendEmail({
-      to: "Eric@faireunpont.fr",
-      subject: `Demande de contact — ${form.type}`,
-      body: `Nom : ${form.nom}\nEmail : ${form.email}\nType de coaching : ${form.type}`,
-    });
-    toast.success("Message envoyé !");
-    setForm({ nom: "", email: "", type: "" });
-    setSending(false);
+    try {
+      await base44.integrations.Core.SendEmail({
+        to: "eric@faireunpont.fr",
+        subject: `Demande de contact — ${form.type}`,
+        body: `Nom : ${form.nom}\nEmail : ${form.email}\nType de coaching : ${form.type}`,
+      });
+
+      const scriptUrl = import.meta.env.VITE_GOOGLE_SCRIPT_URL;
+      if (scriptUrl) {
+        await fetch(scriptUrl, {
+          method: "POST",
+          body: JSON.stringify({
+            date: new Date().toLocaleString("fr-FR"),
+            nom: form.nom,
+            email: form.email,
+            type: form.type,
+          }),
+        });
+      }
+
+      toast.success("Message envoyé !");
+      setForm({ nom: "", email: "", type: "" });
+    } catch {
+      toast.error("Erreur lors de l'envoi. Veuillez réessayer.");
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
