@@ -1,0 +1,17 @@
+{
+  "name": "Faire un pont® — Coaching de dirigeants",
+  "short_name": "Faire un pont",
+  "description": "Éric Guedj accompagne les dirigeants en crise ou en transition. Coach certifié HEC Executive Coaching.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1a1a1a",
+  "lang": "fr",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
