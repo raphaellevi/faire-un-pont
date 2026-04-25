@@ -7,7 +7,7 @@ const offres = [
     icon: Compass,
     title: "Coaching de transformation",
     subtitle: "Tu prends un nouveau poste ou évolues",
-    description: "Construire un pont entre l'identité profonde du dirigeant et son rôle stratégique. Un travail structuré sur la posture de leadership, la cohérence stratégique et l'alignement personnel — pour des décisions plus rapides et une autorité plus stable.",
+    description: "Prise de poste en LBO ou build-up, changement de cap stratégique, phase de croissance accélérée, cession ou transmission : chacune de ces situations crée une pression spécifique sur la posture du dirigeant. Parfois, ce n'est pas la stratégie qui fait défaut — c'est celui qui doit la porter. Le coaching de transformation travaille précisément là : sur l'alignement entre la personne et le rôle, pour que le dirigeant reste pleinement opérationnel quelle que soit la turbulence.",
     action: "Aligner · Transformer · Incarner",
     detail: "8 séances d'1h30 espacées sur 6 mois",
     subs: [
@@ -49,6 +49,22 @@ const offres = [
     ],
   },
 ];
+
+function Description({ value }) {
+  if (Array.isArray(value)) {
+    return (
+      <ul className="space-y-2 border-b border-border pb-5">
+        {value.map((item, i) => (
+          <li key={i} className="flex gap-2 text-sm text-muted-foreground leading-relaxed">
+            <span className="text-primary shrink-0 mt-0.5">·</span>
+            <span>{item}</span>
+          </li>
+        ))}
+      </ul>
+    );
+  }
+  return <p className="text-muted-foreground text-sm leading-relaxed border-b border-border pb-5">{value}</p>;
+}
 
 function SubItem({ sub, isOpen, onToggle }) {
   const Icon = sub.icon;
@@ -120,7 +136,7 @@ export default function PiliersSection() {
                   <h3 className="font-cormorant text-xl sm:text-2xl font-bold text-foreground mb-1">{offre.title}</h3>
                   <p className="text-primary text-sm italic">{offre.subtitle}</p>
                 </div>
-                <p className="text-muted-foreground text-sm leading-relaxed border-b border-border pb-5">{offre.description}</p>
+                <Description value={offre.description} />
                 <div className="border-b border-border pb-5">
                   <p className="text-xs font-semibold text-primary tracking-widest uppercase mb-1">{offre.action}</p>
                   <p className="text-xs text-muted-foreground">{offre.detail}</p>
@@ -161,7 +177,7 @@ export default function PiliersSection() {
                       <h3 className="font-cormorant text-xl font-bold text-foreground mb-1">{offre.title}</h3>
                       <p className="text-primary text-sm italic">{offre.subtitle}</p>
                     </div>
-                    <p className="text-muted-foreground text-sm leading-relaxed border-b border-border pb-5">{offre.description}</p>
+                    <Description value={offre.description} />
                     <div className="border-b border-border pb-5">
                       <p className="text-xs font-semibold text-primary tracking-widest uppercase mb-1">{offre.action}</p>
                       <p className="text-xs text-muted-foreground">{offre.detail}</p>
