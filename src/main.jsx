@@ -7,6 +7,9 @@ import '@/index.css'
 storyblokInit({
   accessToken: import.meta.env.VITE_STORYBLOK_TOKEN,
   use: [apiPlugin],
+  apiOptions: {
+    cache: { clear: "auto", type: "memory" },
+  },
 })
 
 ReactDOM.createRoot(document.getElementById('root')).render(
