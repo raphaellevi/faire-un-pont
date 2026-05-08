@@ -1,7 +1,8 @@
 import { useState, useRef } from "react";
 import { Compass, TrendingDown, Lightbulb, Heart, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
+import { useSiteContent } from "./useSiteContent";
 
-const offres = [
+const OFFRES_FALLBACK = [
   {
     num: "01",
     icon: Compass,
@@ -50,6 +51,10 @@ const offres = [
   },
 ];
 
+// Icons can't come from CMS — assigned by position
+const OFFRE_ICONS = [Compass, TrendingDown];
+const SUB_ICONS = [Lightbulb, TrendingDown, Heart];
+
 function Description({ value }) {
   if (Array.isArray(value)) {
     return (
@@ -93,8 +98,31 @@ function SubItem({ sub, isOpen, onToggle }) {
 }
 
 export default function PiliersSection() {
+  const { getList } = useSiteContent();
   const [open, setOpen] = useState(null);
   const [current, setCurrent] = useState(0);
+
+  const offreBlocks = getList("offre", null);
+  let subIdx = 0;
+  const offres = offreBlocks && offreBlocks.length > 0
+    ? offreBlocks.map((o, oi) => ({
+        num: String(oi + 1).padStart(2, "0"),
+        icon: OFFRE_ICONS[oi] ?? Compass,
+        title: o.titre ?? o.title ?? "",
+        subtitle: o.sous_titre ?? o.subtitle ?? "",
+        description: o.description ?? "",
+        action: o.tag ?? o.action ?? "",
+        detail: o.rythme ?? o.detail ?? "",
+        subs: (o.prolongement || []).map((sub) => ({
+          icon: SUB_ICONS[subIdx++] ?? Lightbulb,
+          title: sub.titre ?? sub.title ?? "",
+          subtitle: sub.sous_titre ?? sub.subtitle ?? "",
+          description: sub.description ?? "",
+          action: sub.tag ?? sub.action ?? "",
+          detail: sub.rythme ?? sub.detail ?? "",
+        })),
+      }))
+    : OFFRES_FALLBACK;
   const touchStartX = useRef(null);
   const toggle = (key) => setOpen(open === key ? null : key);
 

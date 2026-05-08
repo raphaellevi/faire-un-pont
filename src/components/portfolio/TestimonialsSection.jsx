@@ -1,39 +1,24 @@
 import { useState } from "react";
 import { Quote, ChevronLeft, ChevronRight } from "lucide-react";
+import { useSiteContent } from "./useSiteContent";
 
-const temoignages = [
-  {
-    text: "Eric est l'une des personnes qui m'ait le plus marqué dans notre profession depuis 30 ans pour son intelligence, sa finesse intellectuelle, son sens de l'humain et son sens de l'humour, presque british…",
-    role: "Polytechnicien, fondateur d'un fonds d'investissement"
-  },
-  {
-    text: "Tes précieux conseils vont bien me manquer, mais quelque chose me dit que ton accompagnement bienveillant ne fait que commencer.",
-    role: "HEC, Managing Partner d'un fonds d'investissement"
-  },
-  {
-    text: "Ta vision et ton approche parfois originales mais toujours justes m'ont beaucoup apporté ! Au plaisir de se revoir.",
-    role: "Managing Partner, fonds d'investissement"
-  },
-  {
-    text: "Tu as sauvé notre société avec Maître B. Je t'en serai éternellement reconnaissant.",
-    role: "CEO (3ème génération) d'une entreprise familiale"
-  },
-  {
-    text: "Eric et ses équipes m'ont accompagné pendant une période où les difficultés s'additionnaient. Il a su me soutenir à titre personnel ainsi que dans l'interaction avec mon environnement. Il a su m'aider à tenir bon.",
-    role: "Accompagnement de crise"
-  },
-  {
-    text: "Je recommande la sagesse qui imprègne ses interventions.",
-    role: "Mission d'Application HEC"
-  },
+const FALLBACK = [
+  { text: "Eric est l'une des personnes qui m'ait le plus marqué dans notre profession depuis 30 ans pour son intelligence, sa finesse intellectuelle, son sens de l'humain et son sens de l'humour, presque british…", role: "Polytechnicien, fondateur d'un fonds d'investissement" },
+  { text: "Tes précieux conseils vont bien me manquer, mais quelque chose me dit que ton accompagnement bienveillant ne fait que commencer.", role: "HEC, Managing Partner d'un fonds d'investissement" },
+  { text: "Ta vision et ton approche parfois originales mais toujours justes m'ont beaucoup apporté ! Au plaisir de se revoir.", role: "Managing Partner, fonds d'investissement" },
+  { text: "Tu as sauvé notre société avec Maître B. Je t'en serai éternellement reconnaissant.", role: "CEO (3ème génération) d'une entreprise familiale" },
+  { text: "Eric et ses équipes m'ont accompagné pendant une période où les difficultés s'additionnaient. Il a su me soutenir à titre personnel ainsi que dans l'interaction avec mon environnement. Il a su m'aider à tenir bon.", role: "Accompagnement de crise" },
+  { text: "Je recommande la sagesse qui imprègne ses interventions.", role: "Mission d'Application HEC" },
 ];
 
 export default function TestimonialsSection() {
+  const { getList } = useSiteContent();
+  const temoignages = getList("temoignages", FALLBACK);
   const [idx, setIdx] = useState(0);
 
   const prev = () => setIdx((i) => (i - 1 + temoignages.length) % temoignages.length);
   const next = () => setIdx((i) => (i + 1) % temoignages.length);
-  const t = temoignages[idx];
+  const t = temoignages[Math.min(idx, temoignages.length - 1)];
 
   return (
     <section id="temoignages" className="py-12 sm:py-16 px-4 sm:px-6 bg-secondary/20">
@@ -49,7 +34,7 @@ export default function TestimonialsSection() {
         <div className="bg-card border border-border rounded-2xl p-6 sm:p-10 min-h-[180px] flex flex-col justify-between">
           <Quote className="w-6 h-6 text-primary/40 mb-4 shrink-0" />
           <p className="text-muted-foreground text-sm sm:text-base leading-relaxed italic flex-1">
-            "{t.text}"
+            "{t.text.replace(/^["«»]+|["«»]+$/g, "").trim()}"
           </p>
           <div className="mt-6 pt-4 border-t border-border">
             <p className="text-xs text-muted-foreground">{t.role}</p>

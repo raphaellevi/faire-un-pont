@@ -1,8 +1,29 @@
 import { useState } from "react";
 import { Mail, Phone, MapPin, Send } from "lucide-react";
 import { toast } from "sonner";
+import { useSiteContent } from "./useSiteContent";
+
+const OPTIONS_FALLBACK = [
+  { label: "Coaching de transformation" },
+  { label: "Coaching de crise" },
+];
 
 export default function ContactSection() {
+  const { getList } = useSiteContent();
+
+  const contactBlocks = getList("contact", []);
+  const ct = contactBlocks[0] ?? null;
+
+  const titre      = ct?.sous_titre  || "Construisons ce pont ensemble";
+  const sousTitre  = ct?.description || "Vous traversez une crise, une transition ou cherchez un espace confidentiel pour asseoir vos décisions ?";
+  const email      = ct?.email       || "Eric@faireunpont.fr";
+  const telephone  = ct?.telephone   || "+33 6 24 47 77 77";
+  const adresse    = ct?.adresse     || "17, rue Dupont d'Urville — Paris 16";
+
+  const offreBlocks = getList("offre", []);
+  const options = offreBlocks.length > 0
+    ? offreBlocks.map(o => ({ label: o.titre ?? o.title }))
+    : OPTIONS_FALLBACK;
   const [form, setForm] = useState({ nom: "", email: "", type: "" });
   const [sending, setSending] = useState(false);
 
@@ -38,10 +59,10 @@ export default function ContactSection() {
         <div className="mb-8 sm:mb-12 text-center">
           <span className="text-primary text-xs sm:text-sm font-medium tracking-widest uppercase">Contact</span>
           <h2 className="font-cormorant text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mt-2 sm:mt-3 leading-tight">
-            Construisons ce pont ensemble
+            {titre}
           </h2>
           <p className="text-muted-foreground text-sm sm:text-base mt-3 max-w-xl mx-auto leading-relaxed">
-            Vous traversez une crise, une transition ou cherchez un espace confidentiel pour asseoir vos décisions ?
+            {sousTitre}
           </p>
         </div>
 
@@ -56,23 +77,23 @@ export default function ContactSection() {
             </div>
 
             <div className="space-y-4">
-              <a href="mailto:Eric@faireunpont.fr" className="flex items-center gap-4 group">
+              <a href={`mailto:${email}`} className="flex items-center gap-4 group">
                 <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary/20 transition-colors">
                   <Mail className="w-4 h-4 text-primary" />
                 </div>
                 <div>
                   <p className="text-xs text-muted-foreground">Email</p>
-                  <p className="text-sm font-medium text-foreground">Eric@faireunpont.fr</p>
+                  <p className="text-sm font-medium text-foreground">{email}</p>
                 </div>
               </a>
 
-              <a href="tel:+33624477777" className="flex items-center gap-4 group">
+              <a href={`tel:${telephone.replace(/\s/g, "")}`} className="flex items-center gap-4 group">
                 <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary/20 transition-colors">
                   <Phone className="w-4 h-4 text-primary" />
                 </div>
                 <div>
                   <p className="text-xs text-muted-foreground">Téléphone</p>
-                  <p className="text-sm font-medium text-foreground">+33 6 24 47 77 77</p>
+                  <p className="text-sm font-medium text-foreground">{telephone}</p>
                 </div>
               </a>
 
@@ -82,7 +103,7 @@ export default function ContactSection() {
                 </div>
                 <div>
                   <p className="text-xs text-muted-foreground">Adresse</p>
-                  <p className="text-sm font-medium text-foreground">17, rue Dupont d'Urville — Paris 16</p>
+                  <p className="text-sm font-medium text-foreground">{adresse}</p>
                 </div>
               </div>
             </div>
@@ -117,18 +138,18 @@ export default function ContactSection() {
             <div>
               <label className="text-xs font-semibold text-primary tracking-widest uppercase mb-2 block">Type de coaching</label>
               <div className="space-y-2">
-                {["Coaching de transformation", "Coaching de crise"].map((option) => (
-                  <label key={option} className={`flex items-center gap-3 px-4 py-3 rounded-xl border cursor-pointer transition-all ${form.type === option ? "border-primary/40 bg-primary/5" : "border-border bg-background hover:border-primary/20"}`}>
+                {options.map((option) => (
+                  <label key={option.label} className={`flex items-center gap-3 px-4 py-3 rounded-xl border cursor-pointer transition-all ${form.type === option.label ? "border-primary/40 bg-primary/5" : "border-border bg-background hover:border-primary/20"}`}>
                     <input
                       type="radio"
                       name="type"
-                      value={option}
-                      checked={form.type === option}
+                      value={option.label}
+                      checked={form.type === option.label}
                       onChange={e => setForm(f => ({ ...f, type: e.target.value }))}
                       className="accent-primary"
                       required
                     />
-                    <span className="text-sm text-foreground">{option}</span>
+                    <span className="text-sm text-foreground">{option.label}</span>
                   </label>
                 ))}
               </div>
