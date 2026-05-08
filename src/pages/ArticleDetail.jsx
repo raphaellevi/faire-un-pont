@@ -3,6 +3,7 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import { useStoryblokApi } from "@storyblok/react";
 import { renderRichText } from "@storyblok/react";
 import { Calendar, ArrowLeft } from "lucide-react";
+import Navbar from "@/components/portfolio/Navbar";
 
 export default function ArticleDetail() {
   const { slug } = useParams();
@@ -36,6 +37,7 @@ export default function ArticleDetail() {
 
   return (
     <div className="min-h-screen bg-white">
+      <Navbar />
       <div className="max-w-2xl mx-auto px-4 sm:px-6 pt-24 pb-24">
         <Link
           to="/blog"

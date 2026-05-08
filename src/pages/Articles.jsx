@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useStoryblokApi } from "@storyblok/react";
 import { ArrowRight, Calendar } from "lucide-react";
+import Navbar from "@/components/portfolio/Navbar";
 
 export default function Articles() {
   const storyblokApi = useStoryblokApi();
@@ -23,14 +24,12 @@ export default function Articles() {
 
   return (
     <div className="min-h-screen bg-white">
+      <Navbar />
       {/* Header */}
       <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-24 pb-12">
-        <Link to="/" className="text-sm text-primary/70 hover:text-primary transition-colors mb-8 inline-block">
-          ← Retour
-        </Link>
         <span className="text-primary text-xs font-medium tracking-widest uppercase">Publications</span>
         <h1 className="font-cormorant text-4xl sm:text-5xl font-bold text-foreground mt-2 leading-tight">
-          Articles & Réflexions
+          Blog & Articles
         </h1>
         <p className="text-muted-foreground mt-4 text-base leading-relaxed max-w-xl">
           Des textes sur le dirigeant, la crise, la transformation, et l'humain derrière le rôle.
