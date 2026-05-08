@@ -27,7 +27,7 @@ export default function ContactSection() {
   const [form, setForm] = useState({ nom: "", email: "", type: "" });
   const [sending, setSending] = useState(false);
 
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyd76X1XnQS9iCi985WMlakcm8UuOoJeWOVEymwUHtQkcUdP_e8MD6W4XZUL3YZ7Cg/exec";
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzxPyBZjNAzunzLgK8oKDoHRjGp3D7hdLMmmnOTEvChJtppvL0AdsU5rMC4yZBYsjkP/exec";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
