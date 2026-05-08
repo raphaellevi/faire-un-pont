@@ -5,7 +5,9 @@ import App from '@/App.jsx'
 import '@/index.css'
 
 storyblokInit({
-  accessToken: import.meta.env.VITE_STORYBLOK_TOKEN,
+  accessToken: import.meta.env.DEV
+    ? import.meta.env.VITE_STORYBLOK_PREVIEW_TOKEN
+    : import.meta.env.VITE_STORYBLOK_PUBLIC_TOKEN,
   use: [apiPlugin],
   apiOptions: {
     cache: { clear: "auto", type: "memory" },
