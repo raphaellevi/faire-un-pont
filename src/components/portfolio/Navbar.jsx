@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 
 const links = [
@@ -6,6 +7,7 @@ const links = [
   { label: "Mon offre", href: "#piliers" },
   { label: "Témoignages", href: "#temoignages" },
   { label: "Partenaires", href: "#partenaires" },
+  { label: "Articles", href: "/articles", external: false },
 ];
 
 export default function Navbar() {
@@ -29,11 +31,17 @@ export default function Navbar() {
 
           {/* Desktop links */}
           <div className="hidden lg:flex items-center gap-6 absolute left-1/2 -translate-x-1/2">
-            {links.map((l) => (
-              <a key={l.label} href={l.href} className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-                {l.label}
-              </a>
-            ))}
+            {links.map((l) =>
+              l.href.startsWith("/") ? (
+                <Link key={l.label} to={l.href} className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+                  {l.label}
+                </Link>
+              ) : (
+                <a key={l.label} href={l.href} className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+                  {l.label}
+                </a>
+              )
+            )}
           </div>
 
           {/* Desktop CTA */}
@@ -52,16 +60,27 @@ export default function Navbar() {
       {open && (
         <div className="fixed inset-0 z-40 bg-white pt-14 sm:pt-16 flex flex-col lg:hidden">
           <div className="flex flex-col p-6 gap-1">
-            {links.map((l) => (
-              <a
-                key={l.label}
-                href={l.href}
-                onClick={() => setOpen(false)}
-                className="text-foreground font-medium py-3 px-2 border-b border-border text-lg"
-              >
-                {l.label}
-              </a>
-            ))}
+            {links.map((l) =>
+              l.href.startsWith("/") ? (
+                <Link
+                  key={l.label}
+                  to={l.href}
+                  onClick={() => setOpen(false)}
+                  className="text-foreground font-medium py-3 px-2 border-b border-border text-lg"
+                >
+                  {l.label}
+                </Link>
+              ) : (
+                <a
+                  key={l.label}
+                  href={l.href}
+                  onClick={() => setOpen(false)}
+                  className="text-foreground font-medium py-3 px-2 border-b border-border text-lg"
+                >
+                  {l.label}
+                </a>
+              )
+            )}
             <a
               href="#contact"
               onClick={() => setOpen(false)}

@@ -1,8 +1,35 @@
-import { ArrowDown } from "lucide-react";
 import { useSiteContent } from "./useSiteContent";
 
+const CTA_FALLBACK = [
+  { label: "Découvrir mon approche", lien: "#piliers", type: "primaire" },
+  { label: "Me contacter", lien: "#contact", type: "secondaire" },
+];
+
+const CTA_STYLES = {
+  primaire: "bg-primary text-white hover:bg-primary/90 hover:shadow-xl hover:shadow-primary/20",
+  secondaire: "border border-primary/30 text-primary hover:bg-primary/5",
+};
+
 export default function HeroSection() {
-  const { get } = useSiteContent();
+  const { get, getList } = useSiteContent();
+  const heroBlocks = getList("hero", []);
+  // item with component="hero" holds the text content
+  const heroContent = heroBlocks.find(b => b.component === "hero") ?? null;
+  // remaining items with a "lien" are buttons (component="Bouton")
+  // type is stored as string "true"/"false" by the client
+  const ctasFromStoryblok = heroBlocks
+    .filter(b => b.lien)
+    .map(b => ({
+      _uid: b._uid,
+      label: b.titre ?? b.label,
+      lien: b.lien,
+      type: String(b.type) === "true" ? "secondaire" : "primaire",
+    }));
+  const ctas = ctasFromStoryblok.length > 0 ? ctasFromStoryblok : CTA_FALLBACK;
+  // Text: prefer hero[0] fields, fall back to legacy flat fields
+  const sousTitle = heroContent?.sous_titre || get("hero", "sous_titre", "L'accompagnement des dirigeants en crise comme en transformation");
+  const auteur    = heroContent?.auteur     || get("hero", "auteur",     "Éric Guedj");
+  const desc      = heroContent?.description|| get("hero", "description","Personne ne se lève le matin en cherchant un coach, mais… parfois le terrain devient instable et il faut créer un passage solide.");
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-white">
@@ -23,30 +50,32 @@ export default function HeroSection() {
 
         {/* Subtitle */}
         <p className="text-lg sm:text-xl md:text-2xl text-foreground/80 font-light max-w-2xl mx-auto mb-3 sm:mb-4 px-2">
-          {get("hero", "sous_titre", "L'accompagnement des dirigeants en crise comme en transformation")}
+          {sousTitle}
         </p>
 
         <p className="text-base sm:text-lg text-primary/70 font-cormorant italic mb-5 sm:mb-6">
-          {get("hero", "auteur", "Éric Guedj")}
+          {auteur}
         </p>
-
-
 
         {/* Description */}
         <p className="text-sm sm:text-base text-muted-foreground max-w-xl mx-auto mb-8 sm:mb-12 leading-relaxed px-2">
-          {get("hero", "description", "Personne ne se lève le matin en cherchant un coach, mais… parfois le terrain devient instable et il faut créer un passage solide.")}
+          {desc}
         </p>
 
         {/* CTAs */}
-        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center px-4">
-          <a href="#piliers" className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-primary text-white rounded-full font-medium text-sm sm:text-base hover:bg-primary/90 transition-all hover:shadow-xl hover:shadow-primary/20 text-center">
-            Découvrir mon approche
-          </a>
-          <a href="#contact" className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 border border-primary/30 text-primary rounded-full font-medium text-sm sm:text-base hover:bg-primary/5 transition-all text-center">
-            Me contacter
-          </a>
-        </div>
-
+        {ctas.length > 0 && (
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center px-4">
+            {ctas.map((cta) => (
+              <a
+                key={cta._uid || cta.label}
+                href={cta.lien}
+                className={`w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 rounded-full font-medium text-sm sm:text-base transition-all text-center ${CTA_STYLES[cta.type] ?? CTA_STYLES.primaire}`}
+              >
+                {cta.label}
+              </a>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );

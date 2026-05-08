@@ -1,46 +1,22 @@
 import { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useSiteContent } from "./useSiteContent";
 
-const partenaires = [
-  {
-    name: "Sandrine Gruda",
-    specialite: "Coaching de motivation",
-    fondateur: "Sandrine Gruda est fondatrice de Philosophie Gruda",
-    description:
-      "Coach certifiée HEC Executive Coaching, Sandrine Gruda accompagne les dirigeants et managers dans la reconquête de leur élan intérieur. Ancienne sportive de haut niveau, meilleure marqueuse de l'histoire de la sélection française de Basket Ball pour les Jeux Olympiques, elle a développé une approche unique qui puise dans la psychologie de la performance pour aider ses coachés à retrouver motivation, engagement et plaisir dans leur action professionnelle.",
-    initial: "SG",
-  },
-  {
-    name: "Laurent Courbon",
-    specialite: "Coaching de santé",
-    fondateur: "Laurent Courbon est fondateur de Austral",
-    description:
-      "Titulaire du Certificat Health Coach du Harvard Medical School et coach certifié HEC Executive Coaching, Laurent Courbon est spécialiste de la santé des dirigeants. Il intervient à l'intersection du bien-être physique, de la gestion du stress et de la performance durable. Son approche intégrative aide les leaders à prendre soin d'eux-mêmes comme une condition sine qua non de leur efficacité et de leur longévité professionnelle.",
-    initial: "LC",
-  },
-  {
-    name: "Hervé Charlannes",
-    specialite: "Coaching & Intelligence Artificielle",
-    fondateur: "Hervé Charlannes est fondateur de Robulience®",
-    description:
-      "Coach certifié HEC Executive Coaching, Expert-Comptable et Commissaire aux comptes, Hervé Charlannes réalise une veille technologique de premier plan pour la Compagnie Nationale des Commissaires aux Comptes et intègre pleinement l'IA dans sa manière de coacher en conciliant innovation technologique et dimension humaine.",
-    initial: "HC",
-  },
-  {
-    name: "Sandrine Lagarde",
-    specialite: "Coaching & Relais psychothérapeutique",
-    description:
-      "Psychothérapeute en exercice, diplômée d'HEC et coach certifiée HEC Executive Coaching, Sandrine Lagarde opère à la frontière du coaching et de la thérapie. Elle assure un accompagnement de profondeur pour les dirigeants dont les blocages dépassent le cadre professionnel et nécessitent un travail plus introspectif. Son rôle de relais garantit une continuité de soin entre le coaching et la thérapie, dans le respect de chaque parcours. Elle est mobilisée dès qu'un potentiel burn-out est identifié.",
-    initial: "SL",
-  },
+const FALLBACK = [
+  { name: "Sandrine Gruda", specialite: "Coaching de motivation", fondateur: "Sandrine Gruda est fondatrice de Philosophie Gruda", description: "Coach certifiée HEC Executive Coaching, Sandrine Gruda accompagne les dirigeants et managers dans la reconquête de leur élan intérieur. Ancienne sportive de haut niveau, meilleure marqueuse de l'histoire de la sélection française de Basket Ball pour les Jeux Olympiques, elle a développé une approche unique qui puise dans la psychologie de la performance pour aider ses coachés à retrouver motivation, engagement et plaisir dans leur action professionnelle.", initial: "SG" },
+  { name: "Laurent Courbon", specialite: "Coaching de santé", fondateur: "Laurent Courbon est fondateur de Austral", description: "Titulaire du Certificat Health Coach du Harvard Medical School et coach certifié HEC Executive Coaching, Laurent Courbon est spécialiste de la santé des dirigeants. Il intervient à l'intersection du bien-être physique, de la gestion du stress et de la performance durable. Son approche intégrative aide les leaders à prendre soin d'eux-mêmes comme une condition sine qua non de leur efficacité et de leur longévité professionnelle.", initial: "LC" },
+  { name: "Hervé Charlannes", specialite: "Coaching & Intelligence Artificielle", fondateur: "Hervé Charlannes est fondateur de Robulience®", description: "Coach certifié HEC Executive Coaching, Expert-Comptable et Commissaire aux comptes, Hervé Charlannes réalise une veille technologique de premier plan pour la Compagnie Nationale des Commissaires aux Comptes et intègre pleinement l'IA dans sa manière de coacher en conciliant innovation technologique et dimension humaine.", initial: "HC" },
+  { name: "Sandrine Lagarde", specialite: "Coaching & Relais psychothérapeutique", description: "Psychothérapeute en exercice, diplômée d'HEC et coach certifiée HEC Executive Coaching, Sandrine Lagarde opère à la frontière du coaching et de la thérapie. Elle assure un accompagnement de profondeur pour les dirigeants dont les blocages dépassent le cadre professionnel et nécessitent un travail plus introspectif. Son rôle de relais garantit une continuité de soin entre le coaching et la thérapie, dans le respect de chaque parcours. Elle est mobilisée dès qu'un potentiel burn-out est identifié.", initial: "SL" },
 ];
 
 export default function PartenairesSection() {
+  const { getList } = useSiteContent();
+  const partenaires = getList("partenaires", FALLBACK);
   const [idx, setIdx] = useState(0);
 
   const prev = () => setIdx((i) => (i - 1 + partenaires.length) % partenaires.length);
   const next = () => setIdx((i) => (i + 1) % partenaires.length);
-  const p = partenaires[idx];
+  const p = partenaires[Math.min(idx, partenaires.length - 1)];
 
   return (
     <section id="partenaires" className="py-12 sm:py-16 px-4 sm:px-6 bg-background">
