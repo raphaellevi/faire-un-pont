@@ -6,6 +6,7 @@ export function useSiteContent() {
   const [content, setContent] = useState(null);
 
   useEffect(() => {
+    if (!storyblokApi?.get) { setContent({}); return; }
     storyblokApi
       .get("cdn/stories/home", {
         version: import.meta.env.DEV ? "draft" : "published",

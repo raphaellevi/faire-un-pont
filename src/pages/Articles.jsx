@@ -9,6 +9,7 @@ export default function Articles() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!storyblokApi?.get) { setLoading(false); return; }
     storyblokApi
       .get("cdn/stories", {
         starts_with: "articles/",
@@ -55,7 +56,7 @@ export default function Articles() {
             {articles.map((article) => (
               <Link
                 key={article.uuid}
-                to={`/articles/${article.slug}`}
+                to={`/blog/${article.slug}`}
                 className="group block bg-card border border-border rounded-2xl p-6 sm:p-8 hover:border-primary/30 hover:shadow-sm transition-all"
               >
                 <div className="flex items-start justify-between gap-4">

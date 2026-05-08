@@ -4,9 +4,10 @@ import { storyblokInit, apiPlugin } from '@storyblok/react'
 import App from '@/App.jsx'
 import '@/index.css'
 
+const sbToken = import.meta.env.VITE_STORYBLOK_PREVIEW_TOKEN || ""
 storyblokInit({
-  accessToken: import.meta.env.VITE_STORYBLOK_PREVIEW_TOKEN,
-  use: [apiPlugin],
+  accessToken: sbToken,
+  use: sbToken ? [apiPlugin] : [],
   apiOptions: {
     cache: { clear: "auto", type: "memory" },
   },
