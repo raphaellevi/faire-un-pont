@@ -17,7 +17,7 @@ export default function ArticleDetail() {
         version: import.meta.env.DEV ? "draft" : "published",
       })
       .then(({ data }) => setArticle(data.story))
-      .catch(() => navigate("/articles", { replace: true }))
+      .catch(() => navigate("/blog", { replace: true }))
       .finally(() => setLoading(false));
   }, [slug, storyblokApi, navigate]);
 
@@ -38,7 +38,7 @@ export default function ArticleDetail() {
     <div className="min-h-screen bg-white">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 pt-24 pb-24">
         <Link
-          to="/articles"
+          to="/blog"
           className="inline-flex items-center gap-2 text-sm text-primary/70 hover:text-primary transition-colors mb-10"
         >
           <ArrowLeft className="w-3.5 h-3.5" />

@@ -7,7 +7,7 @@ const links = [
   { label: "Mon offre", href: "#piliers" },
   { label: "Témoignages", href: "#temoignages" },
   { label: "Partenaires", href: "#partenaires" },
-  { label: "Articles", href: "/articles", external: false },
+  { label: "Blog", href: "/blog", external: false },
 ];
 
 export default function Navbar() {
