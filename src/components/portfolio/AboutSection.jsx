@@ -1,7 +1,7 @@
 import { renderRichText } from "@storyblok/react";
 import { useSiteContent } from "./useSiteContent";
 
-const PHOTO_FALLBACK = "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69b2d8936e8da0b8716017cf/7eda87a4c_IMG-20201105-WA0011.jpg";
+const PHOTO_FALLBACK = "/eric-guedj-portrait.jpg";
 
 const PARCOURS_FALLBACK = [
   { period: "Années 80",  title: "Expertise financière",       desc: "Expertise Comptable et Commissariat aux comptes, Direction Financière dans la branche crédit à la consommation du Crédit Lyonnais et rapprochement avec Sofinco, Secrétariat Général de Groupama Private Equity." },

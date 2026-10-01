@@ -36,7 +36,7 @@ export default function HeroSection() {
       {/* Background image */}
       <div className="absolute inset-0">
         <img
-          src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69b2d8936e8da0b8716017cf/f9bbb0b07_IMG-20260302-WA0042.jpg"
+          src="/eric-guedj-hero.jpg"
           alt="Pont de Constantine"
           className="w-full h-full object-cover object-top opacity-10"
         />
