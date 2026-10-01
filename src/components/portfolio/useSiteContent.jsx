@@ -1,18 +1,47 @@
 import { useState, useEffect } from "react";
-import { useStoryblokApi } from "@storyblok/react";
+import { useStoryblokApi, registerStoryblokBridge } from "@storyblok/react";
+
+// Inside Storyblok's Visual Editor the URL carries ?_storyblok=<storyId>: show the draft there.
+export const inStoryblokEditor =
+  typeof window !== "undefined" && window.location.search.includes("_storyblok");
+export const storyblokVersion = import.meta.env.DEV || inStoryblokEditor ? "draft" : "published";
+
+// The home story is shared by every section: fetch it once and push live edits to all of them.
+let homeContent = null;
+let homeRequest = null;
+const listeners = new Set();
+
+function setHomeContent(content) {
+  homeContent = content;
+  listeners.forEach((listener) => listener(content));
+}
+
+function loadHome(storyblokApi) {
+  if (homeRequest) return homeRequest;
+  if (!storyblokApi?.get) {
+    setHomeContent({});
+    return (homeRequest = Promise.resolve());
+  }
+  homeRequest = storyblokApi
+    .get("cdn/stories/home", { version: storyblokVersion })
+    .then(({ data }) => {
+      setHomeContent(data.story.content);
+      // Live preview: each keystroke in the Visual Editor sends the updated story here.
+      registerStoryblokBridge(data.story.id, (story) => setHomeContent(story.content));
+    })
+    .catch(() => setHomeContent({}));
+  return homeRequest;
+}
 
 export function useSiteContent() {
   const storyblokApi = useStoryblokApi();
-  const [content, setContent] = useState(null);
+  const [content, setContent] = useState(homeContent);
 
   useEffect(() => {
-    if (!storyblokApi?.get) { setContent({}); return; }
-    storyblokApi
-      .get("cdn/stories/home", {
-        version: import.meta.env.DEV ? "draft" : "published",
-      })
-      .then(({ data }) => setContent(data.story.content))
-      .catch(() => setContent({}));
+    listeners.add(setContent);
+    loadHome(storyblokApi);
+    if (homeContent) setContent(homeContent);
+    return () => listeners.delete(setContent);
   }, [storyblokApi]);
 
   // get("hero", "sous_titre", fallback) → looks up "hero_sous_titre" on the story content

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useStoryblokApi } from "@storyblok/react";
 import { ArrowRight, Calendar } from "lucide-react";
 import Navbar from "@/components/portfolio/Navbar";
+import { storyblokVersion } from "@/components/portfolio/useSiteContent";
 
 export default function Articles() {
   const storyblokApi = useStoryblokApi();
@@ -14,7 +15,7 @@ export default function Articles() {
     storyblokApi
       .get("cdn/stories", {
         starts_with: "articles/",
-        version: import.meta.env.DEV ? "draft" : "published",
+        version: storyblokVersion,
         sort_by: "first_published_at:desc",
       })
       .then(({ data }) => setArticles(data.stories))
