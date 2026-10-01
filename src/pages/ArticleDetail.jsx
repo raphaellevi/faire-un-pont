@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import { useStoryblokApi } from "@storyblok/react";
+import { useStoryblokApi, registerStoryblokBridge } from "@storyblok/react";
 import { renderRichText } from "@storyblok/react";
 import { Calendar, ArrowLeft } from "lucide-react";
 import Navbar from "@/components/portfolio/Navbar";
+import { storyblokVersion } from "@/components/portfolio/useSiteContent";
 
 export default function ArticleDetail() {
   const { slug } = useParams();
@@ -15,9 +16,13 @@ export default function ArticleDetail() {
   useEffect(() => {
     storyblokApi
       .get(`cdn/stories/articles/${slug}`, {
-        version: import.meta.env.DEV ? "draft" : "published",
+        version: storyblokVersion,
       })
-      .then(({ data }) => setArticle(data.story))
+      .then(({ data }) => {
+        setArticle(data.story);
+        // Live preview in the Visual Editor
+        registerStoryblokBridge(data.story.id, setArticle);
+      })
       .catch(() => navigate("/blog", { replace: true }))
       .finally(() => setLoading(false));
   }, [slug, storyblokApi, navigate]);
